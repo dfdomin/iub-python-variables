@@ -248,13 +248,16 @@ function runStats() {
       py.runPython(code);
       var txt = stdout.join('');
       out.textContent = txt || '(sin salida)';
-      // Actualizar tarjetas visuales
-      var lines = txt.split('\n');
-      for (var i = 0; i < lines.length; i++) {
-        if (lines[i].indexOf('Total:') === 0) document.getElementById('statSum').textContent = lines[i].replace('Total: ','');
-        if (lines[i].indexOf('Promedio:') === 0) document.getElementById('statAvg').textContent = lines[i].replace('Promedio: ','');
-        if (lines[i].indexOf('Máximo:') === 0) document.getElementById('statMax').textContent = lines[i].replace('Máximo: ','');
-        if (lines[i].indexOf('Mínimo:') === 0) document.getElementById('statMin').textContent = lines[i].replace('Mínimo: ','');
+
+      // Actualizar tarjetas visuales desde el scope de Python
+      var globals = py.globals;
+      var a = globals.get('sucursal_a'), b = globals.get('sucursal_b'), c = globals.get('sucursal_c');
+      if (typeof a === 'number' && typeof b === 'number' && typeof c === 'number') {
+        var total = a + b + c;
+        document.getElementById('statSum').textContent = total;
+        document.getElementById('statAvg').textContent = (total / 3).toFixed(2);
+        document.getElementById('statMax').textContent = Math.max(a, b, c);
+        document.getElementById('statMin').textContent = Math.min(a, b, c);
       }
     } catch(e) { out.innerHTML = '<span class="py-err">' + esc(e.message) + '</span>'; }
   }
