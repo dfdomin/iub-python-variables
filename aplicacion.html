@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aplicación Organizacional | IUB Python</title>
+<style>
+  :root {
+    --bg: #0f0f1a; --card: #1a1a2e; --accent: #7c3aed; --accent2: #06b6d4;
+    --green: #10b981; --red: #ef4444; --orange: #f59e0b; --text: #e2e8f0;
+    --muted: #94a3b8; --border: #2d2d4a; --radius: 16px;
+    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 80px; }
+  header { background: linear-gradient(135deg, #059669, #10b981); padding: 20px 16px 24px; text-align: center; }
+  header h1 { font-size: 1.2rem; margin-bottom: 4px; }
+  header p { font-size: 0.8rem; opacity: 0.85; }
+
+  .pipeline { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 8px; background: var(--card); flex-wrap: wrap; }
+  .pipe-step { padding: 8px 12px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; text-align: center; }
+  .pipe-step.input { background: #1e40af; color: #93c5fd; }
+  .pipe-step.op { background: #7c3aed; color: #c4b5fd; }
+  .pipe-step.output { background: #059669; color: #6ee7b7; }
+  .pipe-arrow { color: var(--muted); font-size: 1rem; }
+
+  .container { padding: 14px; max-width: 700px; margin: 0 auto; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+  .card h3 { font-size: 0.95rem; margin-bottom: 6px; }
+  .card h3.blue { color: var(--accent2); }
+  .card h3.green { color: var(--green); }
+  .card h3.purple { color: var(--accent); }
+  .card h3.orange { color: var(--orange); }
+  .card p, .card li { font-size: 0.8rem; color: var(--muted); }
+
+  .var-box { display: inline-block; background: #1e1e3a; border-radius: 10px; padding: 8px 14px; margin: 4px; text-align: center; min-width: 80px; border: 1px solid var(--border); }
+  .var-box .vname { font-size: 0.65rem; color: var(--muted); }
+  .var-box .vval { font-weight: 700; font-size: 0.95rem; }
+  .var-box .vval.num { color: var(--accent2); }
+  .var-box .vval.str { color: var(--accent); }
+  .var-box .vval.bool { color: var(--orange); }
+
+  .py-editor { width: 100%; min-height: 60px; background: #0d0d1a; color: #e2e8f0; border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-family: monospace; font-size: 0.8rem; resize: vertical; }
+  .py-out { background: #0a0a14; color: var(--green); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-family: monospace; font-size: 0.78rem; min-height: 36px; margin-top: 6px; }
+  .py-err { color: var(--red); }
+
+  .btn { padding: 8px 16px; border: none; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-success { background: var(--green); color: #000; }
+  .btn-sm { padding: 5px 12px; font-size: 0.72rem; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .stat-card { background: #1e1e3a; border-radius: 10px; padding: 8px; text-align: center; }
+  .stat-card .sval { font-size: 1.1rem; font-weight: 700; color: var(--accent2); }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--green); color: #000; padding: 10px 20px; border-radius: 10px; font-weight: 600; z-index: 999; animation: fadeInOut 2s ease; }
+  @keyframes fadeInOut { 0%{opacity:0;transform:translateX(-50%) translateY(20px)} 15%{opacity:1;transform:translateX(-50%) translateY(0)} 85%{opacity:1} 100%{opacity:0} }
+
+  .back-link { display: block; text-align: center; margin: 16px; color: var(--accent2); font-size: 0.8rem; }
+  @media (min-width: 600px) { .container { padding: 20px 40px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 Aplicación Organizacional</h1>
+  <p>Variables · Operaciones · Indicadores de gestión</p>
+</header>
+
+<div class="pipeline">
+  <div class="pipe-step input">📥 Datos entrada</div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step op">⚙️ Operación</div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step output">📤 Datos salida</div>
+</div>
+
+<div class="container">
+
+  <!-- ═══ SECCIÓN 1: Variables con indicadores reales ═══ -->
+  <div class="card">
+    <h3 class="blue">📦 Variables con indicadores de gestión</h3>
+    <p>Así se ven las variables en un contexto organizacional real:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;justify-content:center">
+      <div class="var-box"><div class="vname">numérica</div><div class="vval num">78.5</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">tasa_retencion</div></div>
+      <div class="var-box"><div class="vname">numérica</div><div class="vval num">4.580.000</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">ingresos_mensuales</div></div>
+      <div class="var-box"><div class="vname">numérica</div><div class="vval num">12</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">horas_extra</div></div>
+      <div class="var-box"><div class="vname">alfanumérica</div><div class="vval str">"APROBADA"</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">estado_factura</div></div>
+    </div>
+    <p style="margin-top:8px;font-size:0.72rem">🔑 Cada indicador del negocio es una <strong>variable</strong>: tiene nombre y guarda un valor.</p>
+  </div>
+
+  <!-- ═══ SECCIÓN 2: Variables lógicas ═══ -->
+  <div class="card" style="border-left:3px solid var(--orange)">
+    <h3 class="orange">🔘 Variables lógicas (booleanas)</h3>
+    <p>Un tercer tipo de variable que solo puede tener <strong>dos valores</strong>: <code style="color:var(--green)">True</code> o <code style="color:var(--red)">False</code>.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;justify-content:center">
+      <div class="var-box"><div class="vname">lógica</div><div class="vval bool">True</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">factura_aprobada</div></div>
+      <div class="var-box"><div class="vname">lógica</div><div class="vval bool">False</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">cliente_moroso</div></div>
+      <div class="var-box"><div class="vname">lógica</div><div class="vval bool">True</div><div style="font-size:0.6rem;color:var(--muted);margin-top:2px">tiene_descuento</div></div>
+    </div>
+    <p style="font-size:0.72rem;margin-top:6px">💡 En gestión: ¿Factura aprobada? <code>True</code>. ¿Cliente debe? <code>False</code>. ¿Aplica descuento? <code>True</code>.</p>
+    <div style="margin-top:8px">
+      <p style="font-size:0.75rem;color:var(--accent2)"><strong>🧪 Pruébalo:</strong></p>
+      <textarea class="py-editor" id="pyLogic" rows="2">factura_aprobada = True
+print(factura_aprobada)
+print(type(factura_aprobada))</textarea>
+      <button class="btn btn-sm btn-primary" style="margin-top:4px" onclick="runPy('pyLogic','pyOutLogic')">▶ Ejecutar</button>
+      <div class="py-out" id="pyOutLogic">Esperando ejecución...</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECCIÓN 3: Operaciones estadísticas sin arreglos ═══ -->
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3 class="green">📈 Operaciones estadísticas (sin arreglos)</h3>
+    <p>No necesitas listas ni arreglos. Python puede operar con <strong>variables sueltas</strong>:</p>
+
+    <div style="background:#1e1e3a;border-radius:10px;padding:10px;margin:8px 0">
+      <p style="font-size:0.72rem;color:var(--muted)">📥 <strong>Datos de entrada</strong> — ventas de 3 sucursales:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:4px">
+        <div class="var-box"><div class="vval num">580</div><div class="vname">sucursal_a</div></div>
+        <div class="var-box"><div class="vval num">720</div><div class="vname">sucursal_b</div></div>
+        <div class="var-box"><div class="vval num">610</div><div class="vname">sucursal_c</div></div>
+      </div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div style="font-size:0.65rem;color:var(--muted)">📊 Suma total</div><div class="sval" id="statSum">?</div></div>
+      <div class="stat-card"><div style="font-size:0.65rem;color:var(--muted)">📐 Promedio</div><div class="sval" id="statAvg">?</div></div>
+      <div class="stat-card"><div style="font-size:0.65rem;color:var(--muted)">🔺 Máximo</div><div class="sval" id="statMax">?</div></div>
+      <div class="stat-card"><div style="font-size:0.65rem;color:var(--muted)">🔻 Mínimo</div><div class="sval" id="statMin">?</div></div>
+    </div>
+
+    <div style="margin-top:10px">
+      <p style="font-size:0.75rem;color:var(--accent2)"><strong>🧪 Ejecuta las operaciones:</strong></p>
+      <textarea class="py-editor" id="pyStats" rows="5">sucursal_a = 580
+sucursal_b = 720
+sucursal_c = 610
+
+total = sucursal_a + sucursal_b + sucursal_c
+print("Total:", total)
+print("Promedio:", total / 3)
+print("Máximo:", max(sucursal_a, sucursal_b, sucursal_c))
+print("Mínimo:", min(sucursal_a, sucursal_b, sucursal_c))</textarea>
+      <button class="btn btn-sm btn-success" style="margin-top:4px" onclick="runStats()">▶ Calcular estadísticas</button>
+      <div class="py-out" id="pyOutStats">Esperando ejecución...</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECCIÓN 4: Ejercicio integrador ═══ -->
+  <div class="card" style="border-left:3px solid var(--accent2)">
+    <h3 class="blue">🧪 Ejercicio: Completa el pipeline</h3>
+    <p>Una empresa tiene estos datos. <strong>Tú decides</strong> qué operación aplicar y qué resultado esperas.</p>
+
+    <div style="background:#0d0d1a;border-radius:10px;padding:10px;margin:8px 0">
+      <p style="font-size:0.72rem"><strong>📥 Entrada:</strong></p>
+      <code style="font-size:0.7rem">
+        horas_extra_semana1 = 8<br>
+        horas_extra_semana2 = 12<br>
+        horas_extra_semana3 = 5<br>
+        horas_extra_semana4 = 10
+      </code>
+    </div>
+
+    <p style="font-size:0.75rem;color:var(--muted)">Elige la operación correcta para cada salida:</p>
+
+    <div style="margin:8px 0">
+      <div style="display:flex;align-items:center;gap:8px;margin:4px 0;flex-wrap:wrap">
+        <span style="font-size:0.72rem;white-space:nowrap">Total horas extra:</span>
+        <select id="ej1op" style="padding:4px 8px;border-radius:6px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:0.7rem">
+          <option value="">-- elige --</option>
+          <option value="suma">suma (+)</option>
+          <option value="promedio">promedio</option>
+          <option value="maximo">max()</option>
+          <option value="minimo">min()</option>
+        </select>
+        <span id="ej1fb" style="font-size:0.7rem"></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin:4px 0;flex-wrap:wrap">
+        <span style="font-size:0.72rem;white-space:nowrap">Semana con más horas:</span>
+        <select id="ej2op" style="padding:4px 8px;border-radius:6px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:0.7rem">
+          <option value="">-- elige --</option>
+          <option value="suma">suma (+)</option>
+          <option value="promedio">promedio</option>
+          <option value="maximo">max()</option>
+          <option value="minimo">min()</option>
+        </select>
+        <span id="ej2fb" style="font-size:0.7rem"></span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin:4px 0;flex-wrap:wrap">
+        <span style="font-size:0.72rem;white-space:nowrap">Horas promedio por semana:</span>
+        <select id="ej3op" style="padding:4px 8px;border-radius:6px;background:var(--bg);color:var(--text);border:1px solid var(--border);font-size:0.7rem">
+          <option value="">-- elige --</option>
+          <option value="suma">suma (+)</option>
+          <option value="promedio">promedio</option>
+          <option value="maximo">max()</option>
+          <option value="minimo">min()</option>
+        </select>
+        <span id="ej3fb" style="font-size:0.7rem"></span>
+      </div>
+    </div>
+
+    <button class="btn btn-sm btn-primary" onclick="verificarEjercicio()">✅ Verificar respuestas</button>
+    <div id="ejResult" style="margin-top:8px;font-size:0.78rem;font-weight:700"></div>
+  </div>
+
+  <a href="index.html" class="back-link">← Volver a la app principal</a>
+  <a href="laboratorio.html" class="back-link">🧪 Ir al Laboratorio de Variables</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+<script>
+var pyodideReady = false;
+
+function initPy() {
+  if (pyodideReady) return Promise.resolve();
+  if (typeof loadPyodide !== 'function') return Promise.reject('Pyodide no cargado');
+  return loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.25.0/full/' })
+    .then(function(py) { window._py = py; pyodideReady = true; });
+}
+
+function runPy(edId, outId) {
+  var code = document.getElementById(edId).value;
+  var out = document.getElementById(outId);
+  if (!code.trim()) return;
+  out.textContent = 'Ejecutando...';
+  out.className = 'py-out';
+  function doRun(py) {
+    try {
+      var stdout = []; py.setStdout({ batched: function(s) { stdout.push(s); } });
+      py.runPython(code);
+      out.textContent = stdout.join('') || '(sin salida)';
+    } catch(e) { out.innerHTML = '<span class="py-err">' + esc(e.message) + '</span>'; }
+  }
+  if (pyodideReady) doRun(window._py);
+  else initPy().then(function() { doRun(window._py); }).catch(function(e) { out.textContent = 'Error: ' + e; });
+}
+
+function runStats() {
+  var code = document.getElementById('pyStats').value;
+  var out = document.getElementById('pyOutStats');
+  if (!code.trim()) return;
+  out.textContent = 'Ejecutando...';
+  out.className = 'py-out';
+  function doRun(py) {
+    try {
+      var stdout = []; py.setStdout({ batched: function(s) { stdout.push(s); } });
+      py.runPython(code);
+      var txt = stdout.join('');
+      out.textContent = txt || '(sin salida)';
+      // Actualizar tarjetas visuales
+      var lines = txt.split('\n');
+      for (var i = 0; i < lines.length; i++) {
+        if (lines[i].indexOf('Total:') === 0) document.getElementById('statSum').textContent = lines[i].replace('Total: ','');
+        if (lines[i].indexOf('Promedio:') === 0) document.getElementById('statAvg').textContent = lines[i].replace('Promedio: ','');
+        if (lines[i].indexOf('Máximo:') === 0) document.getElementById('statMax').textContent = lines[i].replace('Máximo: ','');
+        if (lines[i].indexOf('Mínimo:') === 0) document.getElementById('statMin').textContent = lines[i].replace('Mínimo: ','');
+      }
+    } catch(e) { out.innerHTML = '<span class="py-err">' + esc(e.message) + '</span>'; }
+  }
+  if (pyodideReady) doRun(window._py);
+  else initPy().then(function() { doRun(window._py); }).catch(function(e) { out.textContent = 'Error: ' + e; });
+}
+
+function verificarEjercicio() {
+  var respuestas = { ej1op: 'suma', ej2op: 'maximo', ej3op: 'promedio' };
+  var correctas = 0;
+  for (var k in respuestas) {
+    var sel = document.getElementById(k);
+    var fb = document.getElementById(k.replace('op','fb'));
+    if (sel.value === respuestas[k]) { correctas++; if (fb) { fb.textContent = '✅'; fb.style.color = 'var(--green)'; } }
+    else { if (fb) { fb.textContent = '❌'; fb.style.color = 'var(--red)'; } }
+  }
+  var r = document.getElementById('ejResult');
+  if (correctas === 3) { r.textContent = '🎉 ¡3/3! Sabes elegir la operación correcta para cada necesidad organizacional.'; r.style.color = 'var(--green)'; }
+  else if (correctas >= 1) { r.textContent = '📚 ' + correctas + '/3. Repasa: suma para totales, max() para el mayor, promedio para la media.'; r.style.color = 'var(--orange)'; }
+  else { r.textContent = '🔄 Intenta de nuevo. Recuerda: total → suma, el mayor → max(), la media → promedio.'; r.style.color = 'var(--red)'; }
+}
+
+function esc(s) { s = String(s); return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+initPy().catch(function(){});
+</script>
+</body>
+</html>
