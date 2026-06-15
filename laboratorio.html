@@ -380,23 +380,56 @@ print(a + b)</textarea>
 <section class="tab-panel" id="panelErrores">
   <div class="card">
     <h3>🔍 ¿Qué pasó en el Experimento 2?</h3>
-    <p style="color:var(--muted);font-size:0.8rem">Ejecutaste <code>print(a + b)</code> con <code>a = "847"</code> (texto) y <code>b = 10</code> (número). Python no pudo y te mostró esto:</p>
+    <p style="color:var(--muted);font-size:0.8rem">Ejecutaste <code>print(a + b)</code> con <code>a = "847"</code> (texto) y <code>b = 10</code> (número). Python no pudo y te mostró un error. Pero <strong>depende de dónde lo ejecutes</strong>, el error se ve distinto.</p>
   </div>
 
-  <!-- 1. Error en crudo -->
-  <div class="card">
-    <h3>📄 Así lo ves en pantalla (crudo)</h3>
-    <div style="background:#0d0d1a;padding:12px;border-radius:10px;font-family:monospace;font-size:0.78rem;line-height:1.6;overflow-x:auto;color:#e2e8f0">
-Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 3, in &lt;module&gt;
-TypeError: can only concatenate str (not "int") to str
+  <!-- 1. Error completo de Pyodide (lo que el estudiante VE en esta app) -->
+  <div class="card" style="border-left: 3px solid var(--orange)">
+    <h3>⚠️ En ESTA app (Pyodide) el error se ve ASÍ — largo</h3>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:6px">Esto es lo que acabas de ver en el Experimento 2. No te asustes por la cantidad de líneas.</p>
+    <div style="background:#0d0d1a;padding:10px;border-radius:10px;font-family:monospace;font-size:0.65rem;line-height:1.5;overflow-x:auto;color:#e2e8f0;max-height:200px;overflow-y:auto">
+Traceback (most recent call last):<br>
+  File "/lib/python311.zip/_pyodide/_base.py", line 501, in eval_code<br>
+    .run(globals, locals)<br>
+    <span style="color:#555">^^^^^^^^^^^^^^^^^^^^</span><br>
+  File "/lib/python311.zip/_pyodide/_base.py", line 339, in run<br>
+    coroutine = eval(self.code, globals, locals)<br>
+    <span style="color:#555">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span><br>
+  File "&lt;exec&gt;", line 3, in &lt;module&gt;<br>
+<span style="color:#ef4444;font-weight:700">TypeError: can only concatenate str (not "int") to str</span>
     </div>
-    <p style="font-size:0.72rem;color:var(--muted);margin-top:4px">Así aparece sin filtros. Tres líneas. Parece chino. Vamos a descifrarlo.</p>
+    <p style="font-size:0.7rem;color:var(--muted);margin-top:6px">😰 <strong>7 líneas.</strong> Parece que todo explotó. Pero solo importan LAS ÚLTIMAS 2.</p>
   </div>
 
-  <!-- 2. Mismo error con colores -->
+  <!-- 2. Cómo se ve en un computador normal -->
+  <div class="card" style="border-left: 3px solid var(--green)">
+    <h3>💻 En un computador con Python instalado se vería ASÍ — corto</h3>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:6px">Si ejecutas el mismo código en una terminal de Python real (no en el navegador), el error es mucho más limpio:</p>
+    <div style="background:#0d0d1a;padding:10px;border-radius:10px;font-family:monospace;font-size:0.72rem;line-height:1.5;overflow-x:auto;color:#e2e8f0">
+Traceback (most recent call last):<br>
+  File "&lt;stdin&gt;", line 3, in &lt;module&gt;<br>
+<span style="color:#ef4444;font-weight:700">TypeError: can only concatenate str (not "int") to str</span>
+    </div>
+    <p style="font-size:0.7rem;color:var(--muted);margin-top:6px">😌 <strong>Solo 3 líneas.</strong> Mucho más fácil de leer.</p>
+  </div>
+
+  <!-- 3. Cómo diferenciar: regla de oro -->
+  <div class="card" style="border-left: 3px solid var(--accent2)">
+    <h3>🔑 La regla de oro para leer cualquier error</h3>
+    <div style="font-size:0.78rem">
+      <p style="margin-bottom:8px"><strong>1. Ignora las líneas que NO son tuyas.</strong> Si ves rutas como <code style="background:#1e1e3a;padding:1px 4px;border-radius:3px">/lib/python311.zip/_pyodide/</code>, eso es código interno del motor. <span style="color:var(--red)">No es tu culpa.</span></p>
+      <p style="margin-bottom:8px"><strong>2. Busca tu archivo.</strong> La línea que dice <code style="background:#1e1e3a;padding:1px 4px;border-radius:3px">File "&lt;exec&gt;"</code> o <code style="background:#1e1e3a;padding:1px 4px;border-radius:3px">File "&lt;stdin&gt;"</code> es <span style="color:var(--accent2)">TU código</span>.</p>
+      <p style="margin-bottom:8px"><strong>3. Ve directo al final.</strong> La última línea siempre tiene el tipo de error (<code style="background:#1e1e3a;padding:1px 4px;border-radius:3px;color:var(--red)">TypeError</code>) y el mensaje que explica qué falló.</p>
+    </div>
+    <div style="background:#1e1e3a;padding:10px;border-radius:10px;margin-top:8px;text-align:center">
+      <p style="font-size:0.75rem"><strong>🧠 Truco mental:</strong> Lee el error <span style="color:var(--accent2)">de abajo hacia arriba</span>. Primero el tipo y mensaje (última línea), luego buscas la línea de tu código (la que NO dice _pyodide).</p>
+    </div>
+  </div>
+
+  <!-- 4. Mismo error con colores (versión limpia) -->
   <div class="card">
-    <h3>🎨 El mismo error, con colores de resaltado</h3>
+    <h3>🎨 Así se ve con colores de resaltado</h3>
+    <p style="font-size:0.7rem;color:var(--muted);margin-bottom:6px">Tomamos solo las líneas que importan y las pintamos:</p>
     <div style="background:#0d0d1a;padding:12px;border-radius:10px;font-family:monospace;font-size:0.78rem;line-height:1.6;overflow-x:auto">
       <span style="color:#888">Traceback (most recent call last):</span><br>
       <span style="color:#888">  File</span> <span style="color:#a78bfa">"&lt;stdin&gt;"</span><span style="color:#888">, line</span> <span style="color:#f59e0b;font-weight:700">3</span><br>
@@ -410,7 +443,7 @@ TypeError: can only concatenate str (not "int") to str
     </div>
   </div>
 
-  <!-- 3. Explicación detallada -->
+  <!-- 5. Explicación detallada -->
   <div class="card" style="border-left: 3px solid var(--red)">
     <h3 style="color:var(--red)">🧠 ¿Qué significa cada parte?</h3>
     <div style="margin-top:10px;font-size:0.8rem">
