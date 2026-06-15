@@ -6,37 +6,26 @@
   'use strict';
 
   // ====== SUPABASE CONFIG ======
-  var SUPABASE_URL = 'https://btrsgwkwiucuoittshop.supabase.co';
-  var SUPABASE_ANON_KEY = 'sb_publishable_WzhbHEiNzPt4LPB_UHvduA_SWqTR3FO';
-  var supabase = null;
-
-  try {
+  // Usa window.supabaseClient si fue inicializado por js/supabase.js
+  // Si no existe, intenta crear uno directamente
+  function getSupabase() {
+    if (window.supabaseClient) return window.supabaseClient;
     if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      window.supabaseClient = window.supabase.createClient(
+        'https://btrsgwkwiucuoittshop.supabase.co',
+        'sb_publishable_WzhbHEiNzPt4LPB_UHvduA_SWqTR3FO'
+      );
+      return window.supabaseClient;
     }
-  } catch (e) {
-    console.log('Supabase init skipped:', e.message);
-  }
-
-  // ====== STATE ======
-  var STORAGE_KEY = 'iub_python_parcial_progress';
-  var progress = { modules: {}, quiz: null };
-  try {
-    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && saved.modules) progress = saved;
-  } catch (e) {}
-
-  function saveProgress() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch (e) {}
-    updateProgressUI();
-    syncSupabase();
+    return null;
   }
 
   function syncSupabase() {
-    if (!supabase) return;
+    var client = getSupabase();
+    if (!client) return;
     try {
       var name = localStorage.getItem('iub_student_name') || 'anonimo';
-      supabase.from('student_progress').upsert({
+      client.from('student_progress').upsert({
         student_name: name,
         progress: progress,
         updated_at: new Date().toISOString()
