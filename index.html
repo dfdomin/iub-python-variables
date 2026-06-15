@@ -4,169 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Python para Negocios — Repaso Parcial | IUB</title>
-<style>
-/* ====== DESIGN TOKENS ====== */
-:root {
-  --bg: #f0f2f5;
-  --card: #ffffff;
-  --text: #1a1a2e;
-  --text2: #5f6368;
-  --input-blue: #1a73e8;
-  --process-orange: #f57c00;
-  --var-purple: #7c3aed;
-  --output-green: #0f9d58;
-  --danger: #db4437;
-  --radius: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,.1);
-  --shadow-lg: 0 4px 14px rgba(0,0,0,.12);
-  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; }
-a { color: var(--input-blue); text-decoration: none; }
-/* ====== HEADER ====== */
-.header {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #fff; padding: 16px 20px; text-align: center;
-  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.2);
-}
-.header h1 { font-size: 1.1rem; font-weight: 700; }
-.header .sub { font-size: .75rem; opacity: .75; margin-top: 2px; }
-/* ====== PIPELINE ====== */
-.pipeline {
-  display: flex; align-items: center; justify-content: center;
-  gap: 6px; padding: 14px 8px; flex-wrap: wrap;
-  background: var(--card); border-bottom: 1px solid #e0e0e0;
-}
-.pipe-step {
-  display: flex; align-items: center; gap: 5px;
-  padding: 6px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700;
-  white-space: nowrap;
-}
-.pipe-step.input { background: #e8f0fe; color: var(--input-blue); }
-.pipe-step.var   { background: #fef3e2; color: var(--process-orange); }
-.pipe-step.op    { background: #f3e8ff; color: var(--var-purple); }
-.pipe-step.output{ background: #e6f4ea; color: var(--output-green); }
-.pipe-arrow { font-size: 1rem; color: #999; }
-/* ====== MAIN LAYOUT ====== */
-.container { max-width: 600px; margin: 0 auto; padding: 12px; }
-/* ====== CARD ====== */
-.card {
-  background: var(--card); border-radius: var(--radius);
-  padding: 16px; margin-bottom: 14px;
-  box-shadow: var(--shadow); border-left: 4px solid #ccc;
-  transition: all .2s;
-}
-.card.c-input { border-left-color: var(--input-blue); }
-.card.c-var   { border-left-color: var(--process-orange); }
-.card.c-op    { border-left-color: var(--var-purple); }
-.card.c-output{ border-left-color: var(--output-green); }
-.card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.card-icon { font-size: 1.4rem; }
-.card h2 { font-size: .95rem; font-weight: 700; }
-.card .desc { font-size: .8rem; color: var(--text2); margin-bottom: 10px; }
-/* ====== VISUAL DEMO AREA ====== */
-.demo-area {
-  background: #f8f9fa; border-radius: 8px; padding: 12px;
-  margin: 10px 0; min-height: 40px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  flex-wrap: wrap; font-family: var(--mono); font-size: .85rem;
-  border: 1px dashed #dadce0; position: relative; overflow: hidden;
-}
-/* Variable Box */
-.var-box {
-  display: inline-flex; flex-direction: column; align-items: center;
-  background: #fff; border: 2px solid var(--process-orange); border-radius: 8px;
-  padding: 6px 14px; min-width: 60px; transition: all .3s;
-}
-.var-box .var-name { font-size: .65rem; color: var(--process-orange); font-weight: 700; }
-.var-box .var-value { font-size: 1rem; font-weight: 800; color: var(--text); }
-.var-box.empty { border-style: dashed; opacity: .4; }
-.var-box.filled { border-style: solid; opacity: 1; animation: popIn .3s ease; }
-@keyframes popIn { 0% { transform: scale(.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-/* Screen output */
-.screen-out {
-  background: #1a1a2e; color: #0f0; border-radius: 6px; padding: 10px 14px;
-  font-family: var(--mono); font-size: .78rem; min-height: 30px;
-  min-width: 100px; text-align: left; white-space: pre-wrap; word-break: break-all;
-}
-.screen-out .prompt { color: #ff0; }
-/* Input funnel */
-.input-funnel {
-  display: flex; align-items: center; gap: 8px;
-}
-.funnel-icon { font-size: 2rem; }
-/* ====== CODE BLOCK ====== */
-.code-block {
-  background: #1a1a2e; color: #e0e0e0; border-radius: 8px;
-  padding: 10px 14px; font-family: var(--mono); font-size: .75rem;
-  overflow-x: auto; margin: 8px 0; white-space: pre-wrap; line-height: 1.6;
-}
-.code-block .kw { color: #ff79c6; }  /* keyword */
-.code-block .fn { color: #50fa7b; }  /* function */
-.code-block .str{ color: #f1fa8c; }  /* string */
-.code-block .cm { color: #6272a4; }  /* comment */
-.code-block .num{ color: #bd93f9; }  /* number */
-/* ====== CONTROLS ====== */
-.controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
-.controls input, .controls select {
-  font-size: .8rem; padding: 8px 10px; border: 1.5px solid #dadce0;
-  border-radius: 8px; font-family: var(--mono); flex: 1; min-width: 80px;
-  transition: border-color .2s;
-}
-.controls input:focus { outline: none; border-color: var(--input-blue); }
-.btn {
-  font-size: .78rem; padding: 8px 16px; border: none; border-radius: 8px;
-  font-weight: 700; cursor: pointer; transition: all .2s;
-  white-space: nowrap; font-family: var(--font);
-}
-.btn-run { background: var(--output-green); color: #fff; }
-.btn-run:hover { background: #0b8043; }
-.btn-run:active { transform: scale(.96); }
-.btn-reset { background: #e0e0e0; color: var(--text); }
-.btn-reset:hover { background: #ccc; }
-/* ====== EQUIVALENCES CARD ====== */
-.equiv-table { width: 100%; border-collapse: collapse; font-size: .78rem; margin-top: 8px; }
-.equiv-table th { background: #f1f3f4; padding: 8px; text-align: left; font-weight: 700; }
-.equiv-table td { padding: 8px; border-bottom: 1px solid #e0e0e0; }
-.equiv-table .cairo { color: var(--process-orange); font-weight: 600; }
-.equiv-table .python { color: var(--output-green); font-weight: 600; }
-/* ====== PROGRESS ====== */
-.progress-bar-wrap {
-  background: #e0e0e0; border-radius: 10px; height: 8px; margin: 8px 0;
-}
-.progress-bar-fill {
-  background: var(--output-green); height: 100%; border-radius: 10px;
-  transition: width .4s ease; width: 0%;
-}
-.progress-text { font-size: .72rem; color: var(--text2); text-align: center; }
-/* ====== QUIZ ====== */
-.quiz-q { margin: 12px 0; }
-.quiz-q p { font-weight: 700; font-size: .85rem; margin-bottom: 6px; }
-.quiz-opt { display: block; padding: 8px 12px; margin: 4px 0; border: 1.5px solid #dadce0; border-radius: 8px; cursor: pointer; font-size: .8rem; transition: all .15s; }
-.quiz-opt:hover { border-color: var(--input-blue); background: #e8f0fe; }
-.quiz-opt.selected { border-color: var(--input-blue); background: #e8f0fe; font-weight: 700; }
-.quiz-opt.correct { border-color: var(--output-green); background: #e6f4ea; }
-.quiz-opt.wrong { border-color: var(--danger); background: #fce8e6; }
-/* ====== TOAST ====== */
-.toast {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-  background: #1a1a2e; color: #fff; padding: 10px 20px;
-  border-radius: 20px; font-size: .8rem; z-index: 999;
-  animation: fadeUp .3s ease; box-shadow: var(--shadow-lg);
-}
-@keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
-/* ====== FOOTER ====== */
-.footer { text-align: center; padding: 16px; font-size: .7rem; color: var(--text2); }
-/* ====== MOBILE ====== */
-@media (max-width: 400px) {
-  .card { padding: 12px; }
-  .card h2 { font-size: .85rem; }
-  .code-block { font-size: .7rem; padding: 8px; }
-  .btn { font-size: .72rem; padding: 6px 12px; }
-}
-</style>
+<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 
@@ -195,104 +33,80 @@ a { color: var(--input-blue); text-decoration: none; }
 
 <div class="container" id="modulesContainer">
 
-  <!-- ====== MÓDULO 1: ¿Qué es una variable? ====== -->
+  <!-- MÓDULO 1: Variable -->
   <div class="card c-var" id="mod1">
-    <div class="card-header">
-      <span class="card-icon">📦</span>
-      <h2>Módulo 1 — ¿Qué es una variable?</h2>
-    </div>
-    <div class="desc">Una variable es un <strong>espacio con nombre</strong> donde Python guarda un valor. Como un cajón etiquetado en un armario.</div>
-
+    <div class="card-header"><span class="card-icon">📦</span><h2>Módulo 1 — ¿Qué es una variable?</h2></div>
+    <div class="desc">Una variable es un <strong>espacio con nombre</strong> donde Python guarda un valor. Como un cajón etiquetado.</div>
     <div class="demo-area" id="demo1">
-      <div class="var-box empty" id="varBox1">
-        <span class="var-name">?</span>
-        <span class="var-value"></span>
-      </div>
-      <span style="font-size:.7rem;color:var(--text2)">← Así se ve una variable vacía</span>
+      <div class="var-box empty" id="varBox1"><span class="var-name">?</span><span class="var-value"></span></div>
+      <span style="font-size:.7rem;color:var(--text2)">← variable vacía</span>
     </div>
-
     <div class="controls">
       <input type="text" id="varName1" placeholder="Nombre (ej: tasa)" maxlength="20">
       <input type="text" id="varValue1" placeholder="Valor (ej: 78.5)" maxlength="20">
-      <button class="btn btn-run" onclick="mod1_run()">▶ Crear variable</button>
+      <button class="btn btn-run" id="btn1">▶ Crear variable</button>
     </div>
-
-    <div class="code-block">
-<span class="cm"># En Python, una variable se crea al asignarle un valor:</span>
-<span id="code1">tasa = 78.5</span>
+    <div class="code-block"><span class="cm"># En Python, una variable se crea al asignarle un valor:</span>
+<span id="code1">tasa = 78.5</span></div>
+    <div class="py-runner" id="py1">
+      <div class="py-header">🐍 Pruébalo en Python real ↓</div>
+      <textarea class="py-editor" id="pyEditor1" rows="2">tasa = 78.5&#10;print("Tasa:", tasa)</textarea>
+      <button class="btn btn-run py-btn" id="pyBtn1">▶ Ejecutar Python</button>
+      <div class="py-output" id="pyOut1"></div>
     </div>
   </div>
 
-  <!-- ====== MÓDULO 2: input() = datos de entrada ====== -->
+  <!-- MÓDULO 2: input() -->
   <div class="card c-input" id="mod2">
-    <div class="card-header">
-      <span class="card-icon">📥</span>
-      <h2>Módulo 2 — input() = Datos de entrada</h2>
-    </div>
-    <div class="desc"><code>input()</code> <strong>detiene el programa</strong> y espera que el usuario escriba algo. El texto ingresado se guarda en una variable.</div>
-
+    <div class="card-header"><span class="card-icon">📥</span><h2>Módulo 2 — input() = Datos de entrada</h2></div>
+    <div class="desc"><code>input()</code> <strong>detiene el programa</strong> y espera que el usuario escriba algo. El texto se guarda en una variable.</div>
     <div class="demo-area" id="demo2">
-      <div class="input-funnel">
-        <span class="funnel-icon">⌨️</span>
-        <span style="font-size:.75rem;color:var(--text2)">Escribe algo y presiona Enter ↓</span>
-      </div>
-      <div class="var-box empty" id="varBox2">
-        <span class="var-name" id="varName2disp">dato</span>
-        <span class="var-value" id="varValue2disp"></span>
-      </div>
+      <div class="input-funnel"><span class="funnel-icon">⌨️</span><span style="font-size:.75rem;color:var(--text2)">Escribe algo ↓</span></div>
+      <div class="var-box empty" id="varBox2"><span class="var-name" id="varName2disp">dato</span><span class="var-value" id="varValue2disp"></span></div>
     </div>
-
     <div class="controls">
       <input type="text" id="inputVal2" placeholder="Escribe un dato aquí...">
-      <button class="btn btn-run" onclick="mod2_run()">▶ Simular input()</button>
+      <button class="btn btn-run" id="btn2">▶ Simular input()</button>
     </div>
-
-    <div class="code-block">
-<span class="cm"># input() muestra un mensaje y espera que el usuario escriba:</span>
+    <div class="code-block"><span class="cm"># input() muestra un mensaje y espera datos:</span>
 <span class="fn">nombre</span> = <span class="fn">input</span>(<span class="str">"¿Cómo te llamas? "</span>)
-<span class="cm"># El valor escrito se guarda en la variable 'nombre'</span>
+<span class="cm"># El valor escrito se guarda en 'nombre'</span></div>
+    <div class="py-runner" id="py2">
+      <div class="py-header">🐍 Pruébalo en Python real ↓</div>
+      <textarea class="py-editor" id="pyEditor2" rows="2">nombre = "Ana"&#10;print("Hola,", nombre)</textarea>
+      <button class="btn btn-run py-btn" id="pyBtn2">▶ Ejecutar Python</button>
+      <div class="py-output" id="pyOut2"></div>
     </div>
   </div>
 
-  <!-- ====== MÓDULO 3: print() = datos de salida ====== -->
+  <!-- MÓDULO 3: print() -->
   <div class="card c-output" id="mod3">
-    <div class="card-header">
-      <span class="card-icon">📤</span>
-      <h2>Módulo 3 — print() = Datos de salida</h2>
-    </div>
-    <div class="desc"><code>print()</code> <strong>muestra información en pantalla</strong>. Es la forma en que Python entrega resultados al usuario.</div>
-
+    <div class="card-header"><span class="card-icon">📤</span><h2>Módulo 3 — print() = Datos de salida</h2></div>
+    <div class="desc"><code>print()</code> <strong>muestra información en pantalla</strong>. Es como Python entrega resultados.</div>
     <div class="demo-area" id="demo3">
-      <div class="screen-out" id="screen3">
-        <span class="prompt">&gt;&gt;&gt; </span><span style="color:#888">Esperando print()...</span>
-      </div>
+      <div class="screen-out" id="screen3"><span class="prompt">&gt;&gt;&gt; </span><span style="color:#888">Esperando print()...</span></div>
     </div>
-
     <div class="controls">
       <input type="text" id="printVal3" placeholder="Texto a mostrar" value="Hola, NeuroBiz">
-      <button class="btn btn-run" onclick="mod3_run()">▶ Ejecutar print()</button>
+      <button class="btn btn-run" id="btn3">▶ Ejecutar print()</button>
     </div>
-
-    <div class="code-block">
-<span class="fn">print</span>(<span class="str">"Hola, NeuroBiz"</span>)
-<span class="cm"># Muestra: Hola, NeuroBiz</span>
+    <div class="code-block"><span class="fn">print</span>(<span class="str">"Hola, NeuroBiz"</span>)
+<span class="cm"># Muestra: Hola, NeuroBiz</span></div>
+    <div class="py-runner" id="py3">
+      <div class="py-header">🐍 Pruébalo en Python real ↓</div>
+      <textarea class="py-editor" id="pyEditor3" rows="2">print("Hola, NeuroBiz")&#10;print("Tasa de retención: 78.5%")</textarea>
+      <button class="btn btn-run py-btn" id="pyBtn3">▶ Ejecutar Python</button>
+      <div class="py-output" id="pyOut3"></div>
     </div>
   </div>
 
-  <!-- ====== MÓDULO 4: Mostrar mensaje en pantalla ====== -->
+  <!-- MÓDULO 4: Mensaje en pantalla -->
   <div class="card c-output" id="mod4">
-    <div class="card-header">
-      <span class="card-icon">💬</span>
-      <h2>Módulo 4 — Mostrar un mensaje en pantalla</h2>
-    </div>
-    <div class="desc">La forma más simple de <code>print()</code>: mostrar un <strong>texto fijo</strong> (un string entre comillas).</div>
-
+    <div class="card-header"><span class="card-icon">💬</span><h2>Módulo 4 — Mostrar un mensaje en pantalla</h2></div>
+    <div class="desc">La forma más simple de <code>print()</code>: mostrar <strong>texto fijo</strong> entre comillas.</div>
     <div class="demo-area" id="demo4">
-      <div class="screen-out" id="screen4">
-        <span class="prompt">&gt;&gt;&gt; </span><span style="color:#888">Presiona Ejecutar ↓</span>
-      </div>
+      <div class="screen-out" id="screen4"><span class="prompt">&gt;&gt;&gt; </span><span style="color:#888">Presiona Ejecutar ↓</span></div>
     </div>
-
     <div class="controls">
       <select id="msgSelect4" style="flex:2">
         <option value="Bienvenidos al sistema NeuroBiz">🏢 Bienvenidos al sistema NeuroBiz</option>
@@ -300,138 +114,98 @@ a { color: var(--input-blue); text-decoration: none; }
         <option value="Error: datos no encontrados">❌ Error: datos no encontrados</option>
         <option value="La tasa de retención es:">📈 La tasa de retención es:</option>
       </select>
-      <button class="btn btn-run" onclick="mod4_run()">▶ Ejecutar</button>
+      <button class="btn btn-run" id="btn4">▶ Ejecutar</button>
     </div>
-
-    <div class="code-block">
-<span class="fn">print</span>(<span class="str">"Bienvenidos al sistema NeuroBiz"</span>)
-<span class="cm"># Todo lo que está entre comillas se muestra tal cual</span>
+    <div class="code-block"><span class="fn">print</span>(<span class="str">"Bienvenidos al sistema NeuroBiz"</span>)
+<span class="cm"># Todo entre comillas se muestra tal cual</span></div>
+    <div class="py-runner" id="py4">
+      <div class="py-header">🐍 Pruébalo en Python real ↓</div>
+      <textarea class="py-editor" id="pyEditor4" rows="2">mensaje = "Bienvenidos a NeuroBiz"&#10;print(mensaje)</textarea>
+      <button class="btn btn-run py-btn" id="pyBtn4">▶ Ejecutar Python</button>
+      <div class="py-output" id="pyOut4"></div>
     </div>
   </div>
 
-  <!-- ====== MÓDULO 5: Mensaje + valor de variable ====== -->
+  <!-- MÓDULO 5: f-string -->
   <div class="card c-var" id="mod5">
-    <div class="card-header">
-      <span class="card-icon">🔗</span>
-      <h2>Módulo 5 — Mostrar mensaje + valor de variable</h2>
-    </div>
-    <div class="desc">Usamos <strong>f-strings</strong> (f"...") para combinar texto fijo con el valor de una variable. La <code>{variable}</code> se reemplaza por su valor.</div>
-
+    <div class="card-header"><span class="card-icon">🔗</span><h2>Módulo 5 — Mostrar mensaje + valor de variable</h2></div>
+    <div class="desc">Usamos <strong>f-strings</strong> para combinar texto con variables. <code>{variable}</code> se reemplaza por su valor.</div>
     <div class="demo-area" id="demo5">
-      <div class="var-box filled" id="varBox5">
-        <span class="var-name">tasa</span>
-        <span class="var-value">78.5</span>
-      </div>
+      <div class="var-box filled" id="varBox5"><span class="var-name">tasa</span><span class="var-value">78.5</span></div>
       <span style="font-size:1.2rem">→</span>
-      <div class="screen-out" id="screen5">
-        <span class="prompt">&gt;&gt;&gt; </span><span style="color:#888">Presiona Ejecutar ↓</span>
-      </div>
+      <div class="screen-out" id="screen5"><span class="prompt">&gt;&gt;&gt; </span><span style="color:#888">Presiona Ejecutar ↓</span></div>
     </div>
-
     <div class="controls">
-      <input type="text" id="varVal5" value="78.5" placeholder="Valor de la variable" style="max-width:100px">
-      <button class="btn btn-run" onclick="mod5_run()">▶ Ejecutar f-string</button>
+      <input type="text" id="varVal5" value="78.5" placeholder="Valor" style="max-width:100px">
+      <button class="btn btn-run" id="btn5">▶ Ejecutar f-string</button>
     </div>
-
-    <div class="code-block">
-<span class="kw">tasa</span> = <span class="num">78.5</span>
+    <div class="code-block"><span class="kw">tasa</span> = <span class="num">78.5</span>
 <span class="fn">print</span>(<span class="str">f"La tasa de retención es: </span><span class="kw">{tasa}</span><span class="str">%"</span>)
-<span class="cm"># Muestra: La tasa de retención es: 78.5%</span>
+<span class="cm"># Muestra: La tasa de retención es: 78.5%</span></div>
+    <div class="py-runner" id="py5">
+      <div class="py-header">🐍 Pruébalo en Python real ↓</div>
+      <textarea class="py-editor" id="pyEditor5" rows="2">tasa = 78.5&#10;print(f"La tasa de retención es: {tasa}%")</textarea>
+      <button class="btn btn-run py-btn" id="pyBtn5">▶ Ejecutar Python</button>
+      <div class="py-output" id="pyOut5"></div>
     </div>
   </div>
 
-  <!-- ====== MÓDULO 6: Operaciones básicas ====== -->
+  <!-- MÓDULO 6: Operaciones -->
   <div class="card c-op" id="mod6">
-    <div class="card-header">
-      <span class="card-icon">⚙️</span>
-      <h2>Módulo 6 — Operaciones básicas</h2>
-    </div>
-    <div class="desc">Python puede hacer cálculos con variables numéricas. Los operadores básicos:</div>
-
+    <div class="card-header"><span class="card-icon">⚙️</span><h2>Módulo 6 — Operaciones básicas</h2></div>
+    <div class="desc">Python puede hacer cálculos con variables numéricas:</div>
     <div class="demo-area" id="demo6">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:.72rem;width:100%">
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center">
-          <strong>+</strong> suma<br><span style="color:var(--process-orange)">847 + 112 = 959</span>
-        </div>
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center">
-          <strong>-</strong> resta<br><span style="color:var(--process-orange)">847 - 112 = 735</span>
-        </div>
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center">
-          <strong>*</strong> multiplicación<br><span style="color:var(--process-orange)">78.5 * 2 = 157.0</span>
-        </div>
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center">
-          <strong>/</strong> división<br><span style="color:var(--process-orange)">847 / 10 = 84.7</span>
-        </div>
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center">
-          <strong>//</strong> div. entera<br><span style="color:var(--process-orange)">847 // 10 = 84</span>
-        </div>
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center">
-          <strong>%</strong> residuo<br><span style="color:var(--process-orange)">847 % 10 = 7</span>
-        </div>
-        <div style="background:#fef3e2;padding:6px;border-radius:6px;text-align:center;grid-column:span 2">
-          <strong>**</strong> potencia<br><span style="color:var(--process-orange)">2 ** 3 = 8</span>
-        </div>
+        <div class="op-mini"><strong>+</strong> suma<br><span>847 + 112 = 959</span></div>
+        <div class="op-mini"><strong>-</strong> resta<br><span>847 - 112 = 735</span></div>
+        <div class="op-mini"><strong>*</strong> multiplicación<br><span>78.5 * 2 = 157.0</span></div>
+        <div class="op-mini"><strong>/</strong> división<br><span>847 / 10 = 84.7</span></div>
+        <div class="op-mini"><strong>//</strong> div. entera<br><span>847 // 10 = 84</span></div>
+        <div class="op-mini"><strong>%</strong> residuo<br><span>847 % 10 = 7</span></div>
+        <div class="op-mini" style="grid-column:span 2"><strong>**</strong> potencia<br><span>2 ** 3 = 8</span></div>
       </div>
     </div>
-
     <div class="controls">
-      <input type="number" id="opA6" value="847" placeholder="Número A" style="max-width:80px">
+      <input type="number" id="opA6" value="847" style="max-width:80px">
       <select id="opSelect6" style="max-width:70px">
-        <option value="+">+</option><option value="-">-</option>
-        <option value="*">×</option><option value="/">÷</option>
-        <option value="//">//</option><option value="%">%</option>
-        <option value="**">**</option>
+        <option value="+">+</option><option value="-">-</option><option value="*">×</option>
+        <option value="/">÷</option><option value="//">//</option><option value="%">%</option><option value="**">**</option>
       </select>
-      <input type="number" id="opB6" value="112" placeholder="Número B" style="max-width:80px">
+      <input type="number" id="opB6" value="112" style="max-width:80px">
       <span style="font-weight:700">=</span>
       <span id="opResult6" style="font-weight:800;font-size:1rem;color:var(--var-purple)">?</span>
-      <button class="btn btn-run" onclick="mod6_run()">▶ Calcular</button>
+      <button class="btn btn-run" id="btn6">▶ Calcular</button>
     </div>
-
-    <div class="code-block">
-<span class="kw">sesiones_asistidas</span> = <span class="num">847</span>
-<span class="kw">sesiones_fallidas</span> = <span class="num">112</span>
-<span class="kw">total</span> = sesiones_asistidas + sesiones_fallidas  <span class="cm"># 959</span>
-<span class="kw">tasa</span> = (sesiones_asistidas / total) * <span class="num">100</span>      <span class="cm"># 88.3%</span>
+    <div class="code-block"><span class="kw">a</span> = <span class="num">847</span>
+<span class="kw">b</span> = <span class="num">112</span>
+<span class="kw">total</span> = a + b         <span class="cm"># 959</span>
+<span class="kw">tasa</span> = (a / total) * <span class="num">100</span><span class="cm"># 88.3%</span></div>
+    <div class="py-runner" id="py6">
+      <div class="py-header">🐍 Pruébalo en Python real ↓</div>
+      <textarea class="py-editor" id="pyEditor6" rows="3">a = 847&#10;b = 112&#10;print("Suma:", a + b)&#10;print("División:", a / b)</textarea>
+      <button class="btn btn-run py-btn" id="pyBtn6">▶ Ejecutar Python</button>
+      <div class="py-output" id="pyOut6"></div>
     </div>
   </div>
 
-  <!-- ====== EQUIVALENCIAS CAIRÓ → PYTHON ====== -->
+  <!-- EQUIVALENCIAS CAIRÓ → PYTHON -->
   <div class="card" style="border-left-color:#9e9e9e" id="modEquiv">
-    <div class="card-header">
-      <span class="card-icon">🔄</span>
-      <h2>Equivalencias: Cairó → Python</h2>
-    </div>
-    <div class="desc">Solo estas dos equivalencias necesitas recordar del pseudocódigo:</div>
+    <div class="card-header"><span class="card-icon">🔄</span><h2>Equivalencias: Cairó → Python</h2></div>
+    <div class="desc">Solo estas equivalencias necesitas recordar del pseudocódigo:</div>
     <table class="equiv-table">
-      <tr><th>Cairó (pseudocódigo)</th><th>Python</th><th>¿Qué hace?</th></tr>
-      <tr>
-        <td class="cairo">LEER variable</td>
-        <td class="python">variable = input()</td>
-        <td>Recibe datos del usuario</td>
-      </tr>
-      <tr>
-        <td class="cairo">ESCRIBIR "texto"</td>
-        <td class="python">print("texto")</td>
-        <td>Muestra datos en pantalla</td>
-      </tr>
-      <tr>
-        <td class="cairo">ESCRIBIR variable</td>
-        <td class="python">print(variable)</td>
-        <td>Muestra el valor de una variable</td>
-      </tr>
+      <tr><th>Cairó</th><th>Python</th><th>¿Qué hace?</th></tr>
+      <tr><td class="cairo">LEER variable</td><td class="python">variable = input()</td><td>Recibe datos del usuario</td></tr>
+      <tr><td class="cairo">ESCRIBIR "texto"</td><td class="python">print("texto")</td><td>Muestra datos en pantalla</td></tr>
+      <tr><td class="cairo">ESCRIBIR variable</td><td class="python">print(variable)</td><td>Muestra el valor de una variable</td></tr>
     </table>
   </div>
 
-  <!-- ====== AUTOEVALUACIÓN ====== -->
+  <!-- AUTOEVALUACIÓN -->
   <div class="card" style="border-left-color:var(--input-blue)" id="modQuiz">
-    <div class="card-header">
-      <span class="card-icon">🧪</span>
-      <h2>Autoevaluación — 5 preguntas</h2>
-    </div>
-    <div class="desc">Marca la respuesta correcta para cada pregunta. Al final haz clic en <strong>Verificar</strong>.</div>
+    <div class="card-header"><span class="card-icon">🧪</span><h2>Autoevaluación — 5 preguntas</h2></div>
+    <div class="desc">Marca la respuesta correcta. Al final haz clic en <strong>Verificar</strong>.</div>
     <div id="quizContainer"></div>
-    <button class="btn btn-run" onclick="checkQuiz()" style="margin-top:10px;width:100%">✅ Verificar respuestas</button>
+    <button class="btn btn-run" id="btnQuiz" style="margin-top:10px;width:100%">✅ Verificar respuestas</button>
     <div id="quizFeedback" style="text-align:center;margin-top:8px;font-weight:700"></div>
   </div>
 
@@ -441,239 +215,9 @@ a { color: var(--input-blue); text-decoration: none; }
   IUB — Facultad de Ciencias Económicas y Administrativas · Preparación Parcial · 2026
 </div>
 
-<!-- SUPABASE CDN -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-
-<script>
-// ====== SUPABASE CONFIG ======
-const SUPABASE_URL = 'https://btrsgwkwiucuoittshop.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_WzhbHEiNzPt4LPB_UHvduA_SWqTR3FO';
-
-let supabase = null;
-try {
-  if (window.supabase && SUPABASE_ANON_KEY !== 'PLACEHOLDER') {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-} catch(e) { console.log('Supabase no disponible, usando localStorage'); }
-
-// ====== STATE ======
-const STORAGE_KEY = 'iub_python_parcial_progress';
-let progress = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"modules":{},"quiz":null}');
-if (!progress.modules) progress.modules = {};
-
-function saveProgress() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  updateProgressUI();
-  syncSupabase();
-}
-
-async function syncSupabase() {
-  if (!supabase) return;
-  try {
-    const name = localStorage.getItem('iub_student_name') || 'anonimo';
-    await supabase.from('student_progress').upsert({
-      student_name: name,
-      progress: progress,
-      updated_at: new Date().toISOString()
-    }, { onConflict: 'student_name' });
-  } catch(e) { /* silencioso — localStorage es el source of truth */ }
-}
-
-function updateProgressUI() {
-  const completed = Object.values(progress.modules).filter(v => v === true).length;
-  const total = 7; // 6 modules + quiz
-  document.getElementById('progressText').textContent = 
-    `✅ ${completed} de ${total} módulos completados`;
-  document.getElementById('progressBar').style.width = (completed/total*100) + '%';
-}
-
-function markModule(id) {
-  progress.modules[id] = true;
-  saveProgress();
-  const el = document.getElementById(id);
-  if (el) { el.style.opacity = '1'; el.style.borderLeftWidth = '6px'; }
-}
-
-// ====== MÓDULO 1: Variable ======
-function mod1_run() {
-  const name = document.getElementById('varName1').value.trim() || 'tasa';
-  const value = document.getElementById('varValue1').value.trim() || '78.5';
-  const box = document.getElementById('varBox1');
-  box.classList.remove('empty');
-  box.classList.add('filled');
-  box.querySelector('.var-name').textContent = name;
-  box.querySelector('.var-value').textContent = value;
-  document.getElementById('code1').innerHTML = 
-    `<span class="kw">${name}</span> = <span class="num">${value}</span>`;
-  markModule('mod1');
-  toast('✅ Variable "' + name + '" creada con valor ' + value);
-}
-
-// ====== MÓDULO 2: input() ======
-function mod2_run() {
-  const val = document.getElementById('inputVal2').value.trim();
-  if (!val) { toast('⚠️ Escribe algo primero'); return; }
-  document.getElementById('varValue2disp').textContent = val;
-  document.getElementById('varBox2').classList.remove('empty');
-  document.getElementById('varBox2').classList.add('filled');
-  markModule('mod2');
-  toast('✅ Dato guardado: ' + val);
-}
-
-// ====== MÓDULO 3: print() ======
-function mod3_run() {
-  const val = document.getElementById('printVal3').value.trim();
-  if (!val) { toast('⚠️ Escribe algo para imprimir'); return; }
-  document.getElementById('screen3').innerHTML = 
-    '<span class="prompt">&gt;&gt;&gt; </span>' + escapeHtml(val);
-  markModule('mod3');
-  toast('✅ print() ejecutado');
-}
-
-// ====== MÓDULO 4: Mensaje en pantalla ======
-function mod4_run() {
-  const msg = document.getElementById('msgSelect4').value;
-  document.getElementById('screen4').innerHTML = 
-    '<span class="prompt">&gt;&gt;&gt; </span>' + escapeHtml(msg);
-  markModule('mod4');
-  toast('✅ Mensaje mostrado');
-}
-
-// ====== MÓDULO 5: f-string ======
-function mod5_run() {
-  const val = document.getElementById('varVal5').value.trim() || '78.5';
-  document.getElementById('varBox5').querySelector('.var-value').textContent = val;
-  document.getElementById('screen5').innerHTML = 
-    '<span class="prompt">&gt;&gt;&gt; </span>La tasa de retención es: <strong>' + escapeHtml(val) + '%</strong>';
-  markModule('mod5');
-  toast('✅ f-string ejecutado');
-}
-
-// ====== MÓDULO 6: Operaciones ======
-function mod6_run() {
-  const a = parseFloat(document.getElementById('opA6').value) || 0;
-  const b = parseFloat(document.getElementById('opB6').value) || 0;
-  const op = document.getElementById('opSelect6').value;
-  let result;
-  switch(op) {
-    case '+': result = a + b; break;
-    case '-': result = a - b; break;
-    case '*': result = a * b; break;
-    case '/': result = b !== 0 ? a / b : 'Error: div/0'; break;
-    case '//': result = b !== 0 ? Math.floor(a / b) : 'Error: div/0'; break;
-    case '%': result = b !== 0 ? a % b : 'Error: div/0'; break;
-    case '**': result = a ** b; break;
-  }
-  document.getElementById('opResult6').textContent = 
-    typeof result === 'number' ? Number.isInteger(result) ? result : result.toFixed(2) : result;
-  markModule('mod6');
-  toast('✅ Operación calculada');
-}
-
-// ====== QUIZ ======
-const quizQuestions = [
-  {
-    q: '1. ¿Qué hace input() en Python?',
-    opts: ['Muestra un resultado en pantalla', 'Espera que el usuario escriba un dato', 'Guarda un archivo', 'Cierra el programa'],
-    ans: 1
-  },
-  {
-    q: '2. ¿Cómo se muestra un mensaje en Python?',
-    opts: ['input("Hola")', 'print("Hola")', 'show("Hola")', 'display("Hola")'],
-    ans: 1
-  },
-  {
-    q: '3. ¿Qué imprime este código?<br><code>tasa = 78.5<br>print(f"Tasa: {tasa}%")</code>',
-    opts: ['Tasa: tasa%', 'Tasa: 78.5%', 'Tasa: {tasa}%', 'Error'],
-    ans: 1
-  },
-  {
-    q: '4. Una variable en Python es:',
-    opts: ['Un archivo en disco', 'Un espacio con nombre que guarda un valor', 'Una función del sistema', 'Un tipo de dato fijo'],
-    ans: 1
-  },
-  {
-    q: '5. ¿Cuál es el resultado de: <code>847 % 10</code>?',
-    opts: ['84', '84.7', '7', '10'],
-    ans: 2
-  }
-];
-
-let quizAnswers = {};
-function buildQuiz() {
-  const container = document.getElementById('quizContainer');
-  container.innerHTML = quizQuestions.map((q, qi) => `
-    <div class="quiz-q">
-      <p>${q.q}</p>
-      ${q.opts.map((opt, oi) => `
-        <div class="quiz-opt" id="q${qi}o${oi}" onclick="selectQuiz(${qi},${oi})">${String.fromCharCode(97+oi)}) ${opt}</div>
-      `).join('')}
-    </div>
-  `).join('');
-}
-
-function selectQuiz(qi, oi) {
-  quizAnswers[qi] = oi;
-  for (let i = 0; i < 4; i++) {
-    const el = document.getElementById('q'+qi+'o'+i);
-    if (el) { el.classList.remove('selected'); el.classList.remove('correct'); el.classList.remove('wrong'); }
-  }
-  document.getElementById('q'+qi+'o'+oi).classList.add('selected');
-}
-
-function checkQuiz() {
-  let score = 0;
-  quizQuestions.forEach((q, qi) => {
-    const correct = q.ans;
-    const chosen = quizAnswers[qi];
-    for (let i = 0; i < 4; i++) {
-      const el = document.getElementById('q'+qi+'o'+i);
-      if (!el) continue;
-      if (i === correct) el.classList.add('correct');
-      if (i === chosen && chosen !== correct) el.classList.add('wrong');
-    }
-    if (chosen === correct) score++;
-  });
-  const fb = document.getElementById('quizFeedback');
-  if (score === 5) { fb.innerHTML = '🎉 ¡Perfecto! 5/5 — Estás listo para el parcial.'; fb.style.color = 'var(--output-green)'; }
-  else if (score >= 3) { fb.innerHTML = '👍 ' + score + '/5 — Repasa los módulos marcados en rojo.'; fb.style.color = 'var(--process-orange)'; }
-  else { fb.innerHTML = '📚 ' + score + '/5 — Necesitas repasar. Vuelve a leer cada módulo con calma.'; fb.style.color = 'var(--danger)'; }
-  progress.modules['modQuiz'] = true;
-  saveProgress();
-}
-
-// ====== HELPERS ======
-function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function toast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast'; t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2000);
-}
-
-// ====== STUDENT NAME (para Supabase) ======
-function setupStudent() {
-  let name = localStorage.getItem('iub_student_name');
-  if (!name) {
-    name = prompt('📝 Para guardar tu progreso, escribe tu nombre:');
-    if (name) localStorage.setItem('iub_student_name', name.trim());
-    else localStorage.setItem('iub_student_name', 'anonimo');
-  }
-}
-
-// ====== INIT ======
-document.addEventListener('DOMContentLoaded', () => {
-  setupStudent();
-  buildQuiz();
-  updateProgressUI();
-  // Restore visual state for completed modules
-  if (progress.modules['mod1']) document.getElementById('mod1').style.borderLeftWidth = '6px';
-  if (progress.modules['mod2']) document.getElementById('mod2').style.borderLeftWidth = '6px';
-  if (progress.modules['mod3']) document.getElementById('mod3').style.borderLeftWidth = '6px';
-  if (progress.modules['mod4']) document.getElementById('mod4').style.borderLeftWidth = '6px';
-  if (progress.modules['mod5']) document.getElementById('mod5').style.borderLeftWidth = '6px';
-  if (progress.modules['mod6']) document.getElementById('mod6').style.borderLeftWidth = '6px';
-});
-</script>
+<!-- Pyodide para ejecución Python real -->
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+<!-- App JS -->
+<script src="js/app.js"></script>
 </body>
 </html>

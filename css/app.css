@@ -1,0 +1,222 @@
+/* ====== IUB Python Parcial — Design Tokens ====== */
+:root {
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #1a1a2e;
+  --text2: #5f6368;
+  --input-blue: #1a73e8;
+  --process-orange: #f57c00;
+  --var-purple: #7c3aed;
+  --output-green: #0f9d58;
+  --danger: #db4437;
+  --radius: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,.1);
+  --shadow-lg: 0 4px 14px rgba(0,0,0,.12);
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh; }
+
+/* ====== HEADER ====== */
+.header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff; padding: 16px 20px; text-align: center;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.header h1 { font-size: 1.1rem; font-weight: 700; }
+.header .sub { font-size: .75rem; opacity: .75; margin-top: 2px; }
+
+/* ====== PIPELINE ====== */
+.pipeline {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 14px 8px; flex-wrap: wrap;
+  background: var(--card); border-bottom: 1px solid #e0e0e0;
+}
+.pipe-step {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700;
+  white-space: nowrap;
+}
+.pipe-step.input { background: #e8f0fe; color: var(--input-blue); }
+.pipe-step.var   { background: #fef3e2; color: var(--process-orange); }
+.pipe-step.op    { background: #f3e8ff; color: var(--var-purple); }
+.pipe-step.output{ background: #e6f4ea; color: var(--output-green); }
+.pipe-arrow { font-size: 1rem; color: #999; }
+
+/* ====== LAYOUT ====== */
+.container { max-width: 600px; margin: 0 auto; padding: 12px; }
+
+/* ====== CARD ====== */
+.card {
+  background: var(--card); border-radius: var(--radius);
+  padding: 16px; margin-bottom: 14px;
+  box-shadow: var(--shadow); border-left: 4px solid #ccc;
+}
+.card.c-input { border-left-color: var(--input-blue); }
+.card.c-var   { border-left-color: var(--process-orange); }
+.card.c-op    { border-left-color: var(--var-purple); }
+.card.c-output{ border-left-color: var(--output-green); }
+.card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.card-icon { font-size: 1.4rem; }
+.card h2 { font-size: .95rem; font-weight: 700; }
+.card .desc { font-size: .8rem; color: var(--text2); margin-bottom: 10px; }
+
+/* ====== DEMO AREA ====== */
+.demo-area {
+  background: #f8f9fa; border-radius: 8px; padding: 12px;
+  margin: 10px 0; min-height: 40px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  flex-wrap: wrap; font-family: var(--mono); font-size: .85rem;
+  border: 1px dashed #dadce0;
+}
+
+/* Variable Box */
+.var-box {
+  display: inline-flex; flex-direction: column; align-items: center;
+  background: #fff; border: 2px solid var(--process-orange); border-radius: 8px;
+  padding: 6px 14px; min-width: 60px; transition: all .3s;
+}
+.var-box .var-name { font-size: .65rem; color: var(--process-orange); font-weight: 700; }
+.var-box .var-value { font-size: 1rem; font-weight: 800; color: var(--text); }
+.var-box.empty { border-style: dashed; opacity: .4; }
+.var-box.filled { border-style: solid; opacity: 1; animation: popIn .3s ease; }
+@keyframes popIn { 0% { transform: scale(.8); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+/* Screen Output */
+.screen-out {
+  background: #1a1a2e; color: #0f0; border-radius: 6px; padding: 10px 14px;
+  font-family: var(--mono); font-size: .78rem; min-height: 30px;
+  min-width: 100px; text-align: left; white-space: pre-wrap; word-break: break-all;
+}
+.screen-out .prompt { color: #ff0; }
+
+/* Input Funnel */
+.input-funnel { display: flex; align-items: center; gap: 8px; }
+.funnel-icon { font-size: 2rem; }
+
+/* ====== CODE BLOCK ====== */
+.code-block {
+  background: #1a1a2e; color: #e0e0e0; border-radius: 8px;
+  padding: 10px 14px; font-family: var(--mono); font-size: .75rem;
+  overflow-x: auto; margin: 8px 0; white-space: pre-wrap; line-height: 1.6;
+}
+.code-block .kw { color: #ff79c6; }
+.code-block .fn { color: #50fa7b; }
+.code-block .str{ color: #f1fa8c; }
+.code-block .cm { color: #6272a4; }
+.code-block .num{ color: #bd93f9; }
+
+/* ====== CONTROLS ====== */
+.controls { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
+.controls input, .controls select {
+  font-size: .8rem; padding: 8px 10px; border: 1.5px solid #dadce0;
+  border-radius: 8px; font-family: var(--mono); flex: 1; min-width: 80px;
+}
+.controls input:focus, .controls select:focus { outline: none; border-color: var(--input-blue); }
+
+.btn {
+  font-size: .78rem; padding: 8px 16px; border: none; border-radius: 8px;
+  font-weight: 700; cursor: pointer; transition: all .2s;
+  white-space: nowrap; font-family: var(--font);
+}
+.btn-run { background: var(--output-green); color: #fff; }
+.btn-run:hover { background: #0b8043; }
+.btn-run:active { transform: scale(.96); }
+
+/* ====== PYODIDE RUNNER ====== */
+.py-runner {
+  background: #f0f4ff; border: 1px solid #c5d5f7; border-radius: 8px;
+  padding: 10px; margin-top: 10px;
+}
+.py-header {
+  font-size: .75rem; font-weight: 700; color: var(--input-blue);
+  margin-bottom: 6px;
+}
+.py-editor {
+  width: 100%; font-family: var(--mono); font-size: .75rem;
+  background: #1a1a2e; color: #e0e0e0; border: none; border-radius: 6px;
+  padding: 8px 10px; resize: vertical; min-height: 40px;
+}
+.py-editor:focus { outline: 2px solid var(--input-blue); }
+.py-btn { margin-top: 6px; background: var(--input-blue); }
+.py-btn:hover { background: #1557b0; }
+.py-btn:disabled { background: #93b8ed; cursor: wait; }
+.py-output {
+  background: #1a1a2e; color: #e0e0e0; border-radius: 6px;
+  padding: 8px 10px; margin-top: 6px; font-family: var(--mono);
+  font-size: .75rem; min-height: 24px; white-space: pre-wrap;
+}
+.py-output .py-err { color: #ff6b6b; }
+
+/* ====== OPERATIONS MINI ====== */
+.op-mini {
+  background: #fef3e2; padding: 6px; border-radius: 6px; text-align: center;
+}
+.op-mini span { color: var(--process-orange); }
+
+/* ====== EQUIV TABLE ====== */
+.equiv-table { width: 100%; border-collapse: collapse; font-size: .78rem; margin-top: 8px; }
+.equiv-table th { background: #f1f3f4; padding: 8px; text-align: left; font-weight: 700; }
+.equiv-table td { padding: 8px; border-bottom: 1px solid #e0e0e0; }
+.equiv-table .cairo { color: var(--process-orange); font-weight: 600; }
+.equiv-table .python { color: var(--output-green); font-weight: 600; }
+
+/* ====== PROGRESS ====== */
+.progress-bar-wrap {
+  background: #e0e0e0; border-radius: 10px; height: 8px; margin: 8px 0;
+}
+.progress-bar-fill {
+  background: var(--output-green); height: 100%; border-radius: 10px;
+  transition: width .4s ease; width: 0%;
+}
+.progress-text { font-size: .72rem; color: var(--text2); text-align: center; }
+
+/* ====== QUIZ ====== */
+.quiz-q { margin: 12px 0; }
+.quiz-q p { font-weight: 700; font-size: .85rem; margin-bottom: 6px; }
+.quiz-opt {
+  display: block; padding: 8px 12px; margin: 4px 0;
+  border: 1.5px solid #dadce0; border-radius: 8px; cursor: pointer;
+  font-size: .8rem; transition: all .15s;
+}
+.quiz-opt:hover { border-color: var(--input-blue); background: #e8f0fe; }
+.quiz-opt.selected { border-color: var(--input-blue); background: #e8f0fe; font-weight: 700; }
+.quiz-opt.correct { border-color: var(--output-green); background: #e6f4ea; }
+.quiz-opt.wrong { border-color: var(--danger); background: #fce8e6; }
+
+/* ====== TOAST ====== */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #1a1a2e; color: #fff; padding: 10px 20px;
+  border-radius: 20px; font-size: .8rem; z-index: 999;
+  animation: fadeUp .3s ease; box-shadow: var(--shadow-lg);
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+/* ====== PYODIDE LOADING ====== */
+.pyodide-loading {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  background: var(--card); padding: 20px 30px; border-radius: var(--radius);
+  box-shadow: var(--shadow-lg); z-index: 1000; text-align: center;
+  font-size: .85rem; font-weight: 700;
+}
+.pyodide-loading .spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 3px solid #e0e0e0; border-top-color: var(--input-blue);
+  border-radius: 50%; animation: spin .8s linear infinite; margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ====== FOOTER ====== */
+.footer { text-align: center; padding: 16px; font-size: .7rem; color: var(--text2); }
+
+/* ====== MOBILE ====== */
+@media (max-width: 400px) {
+  .card { padding: 12px; }
+  .card h2 { font-size: .85rem; }
+  .code-block { font-size: .7rem; padding: 8px; }
+  .btn { font-size: .72rem; padding: 6px 12px; }
+  .pipeline { gap: 3px; padding: 10px 4px; }
+  .pipe-step { font-size: .65rem; padding: 4px 7px; }
+}
