@@ -1,0 +1,24 @@
+{
+  "name": "iub-python-variables",
+  "version": "1.0.0",
+  "description": "App interactiva para preparar el parcial de Fundamentos de Computación (IUB).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfdomin/iub-python-variables.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dfdomin/iub-python-variables/issues"
+  },
+  "homepage": "https://github.com/dfdomin/iub-python-variables#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}
