@@ -194,6 +194,21 @@
   .drag-item:active { cursor: grabbing; }
   .drag-item.valor { background: var(--accent2); }
 
+  /* ── Quiz diagnóstico ── */
+  .quiz-opt-diag {
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #1e1e3a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    transition: all 0.2s;
+  }
+  .quiz-opt-diag:hover { border-color: var(--accent2); }
+  .quiz-opt-diag.correct { background: rgba(16,185,129,0.2); border-color: var(--green); }
+  .quiz-opt-diag.wrong { background: rgba(239,68,68,0.2); border-color: var(--red); }
+
   /* ── Formulario final ── */
   .final-form { max-width: 400px; margin: 0 auto; }
   .final-form input {
@@ -252,6 +267,7 @@
 <nav class="tab-nav" id="tabNav">
   <button class="tab-btn active" data-tab="a">📦 Metáforas</button>
   <button class="tab-btn locked" data-tab="b">🔤 Comillas</button>
+  <button class="tab-btn locked" data-tab="errores">🔍 Errores</button>
   <button class="tab-btn locked" data-tab="c">🎮 Ejercicio</button>
   <button class="tab-btn locked" data-tab="final">📝 Final</button>
 </nav>
@@ -356,7 +372,122 @@ print(a + b)</textarea>
   </div>
 
   <div style="text-align:center;margin-top:14px">
-    <button class="btn btn-success" onclick="unlockTab('c')">✅ Entendí — Avanzar al Ejercicio →</button>
+    <button class="btn btn-success" onclick="unlockTab('errores')">✅ Entendí — Avanzar a Errores →</button>
+  </div>
+</section>
+
+<!-- ═══ TAB ERRORES: INTERPRETACIÓN ═══ -->
+<section class="tab-panel" id="panelErrores">
+  <div class="card">
+    <h3>🔍 ¿Qué pasó en el Experimento 2?</h3>
+    <p style="color:var(--muted);font-size:0.8rem">Ejecutaste esto y Python mostró un error. Vamos a leerlo <strong>parte por parte</strong> para que nunca más te asuste.</p>
+  </div>
+
+  <!-- Anatomía del error -->
+  <div class="card" style="border-left: 3px solid var(--red)">
+    <h3 style="color:var(--red)">🧠 Anatomía del error — apréndelo de memoria</h3>
+    <div style="background:#0d0d1a;padding:12px;border-radius:10px;font-family:monospace;font-size:0.78rem;line-height:1.6;overflow-x:auto">
+      <span style="color:#888">Traceback (most recent call last):</span><br>
+      <span style="color:#888">  File</span> <span style="color:#a78bfa">"&lt;stdin&gt;"</span><span style="color:#888">, line</span> <span style="color:#f59e0b">3</span><br>
+      <span style="color:#ef4444;font-weight:700">TypeError</span><span style="color:#e2e8f0">: can only concatenate str (not "int") to str</span>
+    </div>
+    <div style="margin-top:10px;font-size:0.8rem">
+      <table style="width:100%;border-collapse:collapse;font-size:0.75rem">
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:6px;color:var(--accent2);font-weight:700;white-space:nowrap">📁 Archivo</td>
+          <td style="padding:6px"><code style="color:#a78bfa">"&lt;stdin&gt;"</code> = entrada estándar (lo que escribiste)</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:6px;color:var(--accent2);font-weight:700">📍 Línea</td>
+          <td style="padding:6px"><code style="color:#f59e0b">línea 3</code> → <code>print(a + b)</code> es donde falló</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:6px;color:var(--accent2);font-weight:700">🏷️ Tipo</td>
+          <td style="padding:6px"><code style="color:#ef4444">TypeError</code> = estás usando tipos incompatibles</td>
+        </tr>
+        <tr>
+          <td style="padding:6px;color:var(--accent2);font-weight:700">💬 Mensaje</td>
+          <td style="padding:6px">"solo se puede concatenar str (no int) con str"</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Traducción humana -->
+  <div class="card">
+    <h3>🗣️ Traducción al español coloquial</h3>
+    <div style="background:#1e1e3a;padding:12px;border-radius:10px">
+      <p style="font-size:0.82rem;margin-bottom:6px"><strong>Python te está diciendo:</strong></p>
+      <p style="font-size:0.85rem;color:var(--accent2)">"Oye, <code>"847"</code> es texto (por las comillas) y <code>10</code> es número. No sé si quieres sumarlos como matemáticas o pegarlos como palabras. <strong>No puedo adivinar. Sé claro.</strong>"</p>
+    </div>
+  </div>
+
+  <!-- Por qué importa en gestión administrativa -->
+  <div class="card" style="border-left: 3px solid var(--accent2)">
+    <h3>💼 ¿Esto para qué me sirve en Gestión Administrativa?</h3>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:8px">Interpretar mensajes de error <strong>no es solo para programar</strong>. Es una habilidad profesional que usaras todos los días:</p>
+
+    <div style="background:#1e1e3a;padding:10px;border-radius:10px;margin-bottom:8px">
+      <p style="font-size:0.78rem"><strong>📋 Ejemplo 1 — Error en un sistema de nómina</strong></p>
+      <p style="font-size:0.75rem;color:var(--muted)">El sistema dice: <em>"El valor ingresado en 'horas extra' no es numérico"</em>. Si aprendiste a leer errores, sabes que alguien escribió texto donde debía ir un número. <strong>Diagnosticas en segundos</strong> en vez de llamar a soporte.</p>
+    </div>
+
+    <div style="background:#1e1e3a;padding:10px;border-radius:10px;margin-bottom:8px">
+      <p style="font-size:0.78rem"><strong>📊 Ejemplo 2 — Reporte de inventario rechazado</strong></p>
+      <p style="font-size:0.75rem;color:var(--muted)">El ERP devuelve: <em>"No se puede calcular total: campo 'cantidad' contiene caracteres no válidos"</em>. Vas directo a la celda del Excel que tiene mal el dato. <strong>No necesitas a sistemas</strong> para arreglarlo.</p>
+    </div>
+
+    <div style="background:#1e1e3a;padding:10px;border-radius:10px;margin-bottom:8px">
+      <p style="font-size:0.78rem"><strong>🔐 Ejemplo 3 — Falla en facturación electrónica</strong></p>
+      <p style="font-size:0.75rem;color:var(--muted)">La DIAN responde: <em>"Error 422: NIT del receptor no cumple formato"</em>. Leer el código y el mensaje te dice <strong>exactamente qué corregir</strong>: el NIT. No pierdes tiempo adivinando.</p>
+    </div>
+
+    <p style="font-size:0.8rem;margin-top:8px;text-align:center"><strong>🔑 Leer errores = diagnosticar rápido = resolver sin depender de otros.</strong></p>
+  </div>
+
+  <!-- Mini-ejercicio diagnóstico -->
+  <div class="card">
+    <h3>🧪 Ahora tú: diagnostica estos 3 errores</h3>
+    <p style="font-size:0.78rem;color:var(--muted)">Lee cada mensaje de error y selecciona la causa correcta.</p>
+
+    <!-- Error 1 -->
+    <div style="background:#0d0d1a;padding:10px;border-radius:10px;margin:10px 0;font-family:monospace;font-size:0.75rem">
+      <span style="color:#ef4444">NameError</span>: name <span style="color:#a78bfa">'tasa'</span> is not defined
+    </div>
+    <div id="diag1" style="font-size:0.78rem">
+      <div class="quiz-opt-diag" onclick="checkDiag(1,'a',this)" data-q="1" data-a="a">a) La variable no se puede llamar "tasa"</div>
+      <div class="quiz-opt-diag" onclick="checkDiag(1,'b',this)" data-q="1" data-a="b">b) Usaste la variable <strong>antes</strong> de crearla con <code>=</code></div>
+      <div class="quiz-opt-diag" onclick="checkDiag(1,'c',this)" data-q="1" data-a="c">c) Hay que escribir <code>tasa = 0</code> al final del programa</div>
+    </div>
+    <div id="diag1fb" style="font-size:0.75rem;margin-top:4px"></div>
+
+    <!-- Error 2 -->
+    <div style="background:#0d0d1a;padding:10px;border-radius:10px;margin:10px 0;font-family:monospace;font-size:0.75rem">
+      <span style="color:#ef4444">TypeError</span>: unsupported operand type(s) for +: <span style="color:#a78bfa">'int'</span> and <span style="color:#a78bfa">'str'</span>
+    </div>
+    <div id="diag2" style="font-size:0.78rem">
+      <div class="quiz-opt-diag" onclick="checkDiag(2,'a',this)" data-q="2" data-a="a">a) No se pueden sumar <code>int</code> y <code>str</code> — uno es número, otro texto</div>
+      <div class="quiz-opt-diag" onclick="checkDiag(2,'b',this)" data-q="2" data-a="b">b) El símbolo <code>+</code> no existe en Python</div>
+      <div class="quiz-opt-diag" onclick="checkDiag(2,'c',this)" data-q="2" data-a="c">c) Hay que importar la librería <code>math</code></div>
+    </div>
+    <div id="diag2fb" style="font-size:0.75rem;margin-top:4px"></div>
+
+    <!-- Error 3 -->
+    <div style="background:#0d0d1a;padding:10px;border-radius:10px;margin:10px 0;font-family:monospace;font-size:0.75rem">
+      <span style="color:#ef4444">SyntaxError</span>: EOL while scanning string literal
+    </div>
+    <div id="diag3" style="font-size:0.78rem">
+      <div class="quiz-opt-diag" onclick="checkDiag(3,'a',this)" data-q="3" data-a="a">a) El programa es muy largo</div>
+      <div class="quiz-opt-diag" onclick="checkDiag(3,'b',this)" data-q="3" data-a="b">b) El archivo tiene un virus</div>
+      <div class="quiz-opt-diag" onclick="checkDiag(3,'c',this)" data-q="3" data-a="c">c) Dejaste <strong>comillas sin cerrar</strong> — te faltó una <code>"</code> al final</div>
+    </div>
+    <div id="diag3fb" style="font-size:0.75rem;margin-top:4px"></div>
+
+    <div id="diagResult" style="display:none;text-align:center;margin-top:10px;color:var(--green);font-weight:700"></div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px">
+    <button class="btn btn-success" id="btnAvanzarEjercicio" onclick="unlockTab('c')">✅ Entendí — Avanzar al Ejercicio →</button>
   </div>
 </section>
 
@@ -434,7 +565,7 @@ print(a + b)</textarea>
 // ═══════════════════════════════════════
 // ESTADO
 // ═══════════════════════════════════════
-var unlockedTabs = { a: true, b: false, c: false, final: false };
+var unlockedTabs = { a: true, b: false, errores: false, c: false, final: false };
 var pyodideReady = false;
 var nivel1Completo = false, nivel2Completo = false, nivel3Completo = false;
 var notaAcumulada = 0;
@@ -457,8 +588,9 @@ function unlockTab(tab) {
   unlockedTabs[tab] = true;
   // Calcular nota acumulada
   if (tab === 'b') notaAcumulada = 2; // Metáforas: 2 pts
-  if (tab === 'c') notaAcumulada = 4; // + Comillas: 4 pts
-  if (tab === 'final') notaAcumulada = 5; // + Ejercicio: 5 pts (base)
+  if (tab === 'errores') notaAcumulada = 3; // + Comillas + errores: 3 pts
+  if (tab === 'c') notaAcumulada = 4.5; // + Ejercicio: 4.5 pts
+  if (tab === 'final') notaAcumulada = 5; // + Cierre: 5 pts
   updateNota();
   // Marcar botón como completado
   var prevBtn = document.querySelector('[data-tab="' + tab + '"]');
@@ -554,7 +686,7 @@ dropZone1.addEventListener('drop', function(e) {
     document.getElementById('nivel1ok').style.display = 'block';
     if (!nivel1Completo) {
       nivel1Completo = true;
-      notaAcumulada = Math.max(notaAcumulada, 1);
+      notaAcumulada = Math.max(notaAcumulada, 3.5);
       updateNota();
       // Desbloquear nivel 2
       var n2 = document.getElementById('nivel2card');
@@ -593,7 +725,7 @@ var droppedN2 = {};
       document.getElementById('nivel2ok').style.display = 'block';
       if (!nivel2Completo) {
         nivel2Completo = true;
-        notaAcumulada = Math.max(notaAcumulada, 3);
+        notaAcumulada = Math.max(notaAcumulada, 4);
         updateNota();
         var n3 = document.getElementById('nivel3card');
         n3.style.opacity = '1';
@@ -677,6 +809,52 @@ function guardarFinal() {
 
 function updateNota() {
   document.getElementById('notaFinal').textContent = notaAcumulada + ' / 5 pts';
+}
+
+// ═══════════════════════════════════════
+// DIAGNÓSTICO DE ERRORES
+// ═══════════════════════════════════════
+var diagAnswers = { 1: 'b', 2: 'a', 3: 'c' };
+var diagChosen = {};
+var diagScore = 0;
+
+function checkDiag(q, choice, el) {
+  if (diagChosen[q] !== undefined) return; // Ya respondió esta
+  diagChosen[q] = choice;
+
+  // Marcar visualmente
+  var opts = el.parentElement.querySelectorAll('.quiz-opt-diag');
+  for (var i = 0; i < opts.length; i++) {
+    var a = opts[i].getAttribute('data-a');
+    if (a === diagAnswers[q]) opts[i].classList.add('correct');
+    if (opts[i] === el && choice !== diagAnswers[q]) opts[i].classList.add('wrong');
+  }
+
+  var fb = document.getElementById('diag' + q + 'fb');
+  if (choice === diagAnswers[q]) {
+    fb.innerHTML = '✅ ¡Correcto!';
+    fb.style.color = 'var(--green)';
+    diagScore++;
+  } else {
+    fb.innerHTML = '❌ Incorrecto. La respuesta correcta es la ' + diagAnswers[q] + ')';
+    fb.style.color = 'var(--red)';
+  }
+
+  // Si respondió los 3
+  if (Object.keys(diagChosen).length === 3) {
+    var result = document.getElementById('diagResult');
+    result.style.display = 'block';
+    if (diagScore === 3) {
+      result.textContent = '🎉 ¡3/3! Diagnosticas errores como un profesional.';
+    } else if (diagScore >= 1) {
+      result.textContent = '📚 ' + diagScore + '/3. Repasa los tipos de error: NameError, TypeError, SyntaxError.';
+    } else {
+      result.textContent = '🔄 0/3. Vuelve a leer la anatomía del error arriba e inténtalo de nuevo.';
+    }
+    // Refrescar botón de avanzar
+    var btn = document.getElementById('btnAvanzarEjercicio');
+    if (btn) { btn.style.background = 'var(--green)'; btn.textContent = '✅ ' + diagScore + '/3 — Avanzar al Ejercicio →'; }
+  }
 }
 
 // ═══════════════════════════════════════

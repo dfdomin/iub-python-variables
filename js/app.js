@@ -33,6 +33,20 @@
     } catch (e) {}
   }
 
+  // ====== STATE ======
+  var STORAGE_KEY = 'iub_python_parcial_progress';
+  var progress = { modules: {}, quiz: null };
+  try {
+    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved && saved.modules) progress = saved;
+  } catch (e) {}
+
+  function saveProgress() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch (e) {}
+    updateProgressUI();
+    syncSupabase();
+  }
+
   function updateProgressUI() {
     var completed = 0;
     for (var k in progress.modules) {

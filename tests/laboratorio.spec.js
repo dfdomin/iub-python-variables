@@ -1,31 +1,40 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
-// Helper: desbloquear todas las secciones hasta el final
+// Helper actualizado: A → B → Errores → C → Final
 async function unlockAll(page) {
   await page.goto('/laboratorio.html');
-  // Tab A → B
+  // A → B
   await page.click('button:has-text("Avanzar a Comillas")');
-  // Tab B → C
-  await page.click('button:has-text("Avanzar al Ejercicio")');
-  // Completar niveles 1, 2, 3 via JS directo
+  // B → Errores
+  await page.click('button:has-text("Avanzar a Errores")');
+  // Responder diagnóstico
   await page.evaluate(() => {
-    // Nivel 1: simular drop
+    if (typeof checkDiag === 'function') {
+      var opts = document.querySelectorAll('#panelErrores .quiz-opt-diag');
+      for (var i = 0; i < opts.length; i++) {
+        var a = opts[i].getAttribute('data-a');
+        var q = parseInt(opts[i].getAttribute('data-q'));
+        if ((q === 1 && a === 'b') || (q === 2 && a === 'a') || (q === 3 && a === 'c')) {
+          checkDiag(q, a, opts[i]);
+        }
+      }
+    }
+  });
+  // Errores → C
+  await page.click('#btnAvanzarEjercicio');
+  // Completar niveles
+  await page.evaluate(() => {
     if (typeof nivel1Completo !== 'undefined') nivel1Completo = true;
     document.getElementById('dz1val').textContent = '3.1416';
     document.getElementById('nivel1ok').style.display = 'block';
-    // Desbloquear nivel 2
     document.getElementById('nivel2card').style.opacity = '1';
     document.getElementById('nivel2card').style.pointerEvents = 'auto';
-    // Nivel 2: completo
     if (typeof nivel2Completo !== 'undefined') nivel2Completo = true;
     document.getElementById('nivel2ok').style.display = 'block';
-    // Desbloquear nivel 3
     document.getElementById('nivel3card').style.opacity = '1';
     document.getElementById('nivel3card').style.pointerEvents = 'auto';
-    // Nivel 3: completo
     if (typeof nivel3Completo !== 'undefined') nivel3Completo = true;
-    // Mostrar botón final
     document.getElementById('btnFinalWrapper').hidden = false;
     if (typeof notaAcumulada !== 'undefined') notaAcumulada = 5;
     if (typeof updateNota === 'function') updateNota();
@@ -63,11 +72,11 @@ test.describe('Laboratorio — Tab B: Comillas', () => {
     await expect(page.locator('#pyEditorB2')).toContainText('"847"');
   });
 
-  test('botón "Avanzar al Ejercicio" desbloquea Tab C', async ({ page }) => {
+  test('botón "Avanzar a Errores" desbloquea Tab Errores', async ({ page }) => {
     await page.goto('/laboratorio.html');
     await page.click('button:has-text("Avanzar a Comillas")');
-    await page.click('button:has-text("Avanzar al Ejercicio")');
-    await expect(page.locator('#panelC')).toHaveClass(/active/);
+    await page.click('button:has-text("Avanzar a Errores")');
+    await expect(page.locator('#panelErrores')).toHaveClass(/active/);
   });
 });
 
@@ -75,9 +84,20 @@ test.describe('Laboratorio — Tab C: Drag & Drop', () => {
   test('Nivel 1: drag del valor a drop zone', async ({ page }) => {
     await page.goto('/laboratorio.html');
     await page.click('button:has-text("Avanzar a Comillas")');
-    await page.click('button:has-text("Avanzar al Ejercicio")');
+    await page.click('button:has-text("Avanzar a Errores")');
+    // Responder diagnóstico
+    await page.evaluate(() => {
+      var opts = document.querySelectorAll('#panelErrores .quiz-opt-diag');
+      for (var i = 0; i < opts.length; i++) {
+        var a = opts[i].getAttribute('data-a');
+        var q = parseInt(opts[i].getAttribute('data-q'));
+        if ((q === 1 && a === 'b') || (q === 2 && a === 'a') || (q === 3 && a === 'c')) {
+          checkDiag(q, a, opts[i]);
+        }
+      }
+    });
+    await page.click('#btnAvanzarEjercicio');
 
-    // Simular drag & drop
     await page.evaluate(() => {
       var dz = document.getElementById('dropZone1');
       var dt = new DataTransfer();
@@ -94,7 +114,6 @@ test.describe('Laboratorio — Tab C: Drag & Drop', () => {
 
     await page.fill('#n3nombre', 'documento');
     await page.fill('#n3valor', '10456789');
-    // Click en el botón Guardar dentro del nivel 3 card
     await page.locator('#nivel3card button').click();
 
     await expect(page.locator('#estanteN3')).toContainText('documento');
@@ -106,18 +125,12 @@ test.describe('Laboratorio — Tab Final: Registro', () => {
   test('llenar formulario y guardar', async ({ page }) => {
     await unlockAll(page);
 
-    // Ir al cierre
     await page.click('button:has-text("Ir al cierre")');
+    await expect(page.locator('#notaFinal')).toContainText('5');
 
-    // Verificar nota
-    await expect(page.locator('#notaFinal')).toContainText('5 / 5');
-
-    // Llenar formulario
     await page.fill('#fNombre', 'María García López');
     await page.fill('#fDoc', '10456789');
     await page.click('button:has-text("Guardar en Supabase")');
-
-    // Verificar mensaje
     await expect(page.locator('#guardadoMsg')).toBeVisible();
   });
 });
